@@ -95,6 +95,9 @@ class VisualsNode(Thread, Node):
         # message type: kiwibot_msg
         # callback:cb_kiwibot_status
         # add here your solution
+
+        rospy.Subscriber("/kiwibot/status", kiwibot_msg, cb_kiwibot_status)
+
         self.msg_kiwibot = kiwibot_msg()
         self.turn_robot(heading_angle=float(os.getenv("BOT_INITIAL_YAW", default=0.0)))
         self.msg_kiwibot.pos_x = int(os.getenv("BOT_INITIAL_X", default=917))
