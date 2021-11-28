@@ -426,7 +426,8 @@ class VisualsNode(Thread, Node):
 
         # -----------------------------------------
         # Insert you solution here
-        pass
+        for i in land_marks:
+            cv2.circle(self._win_background, (i.x, i.y), 15, (0, 0, 255), 5)
 
         # -----------------------------------------
 
