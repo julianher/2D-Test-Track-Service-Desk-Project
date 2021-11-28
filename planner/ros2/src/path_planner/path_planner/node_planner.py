@@ -511,9 +511,7 @@ class PlannerNode(Node):
         va_y = 0
         s1 = s3 = int(n * pt)
         s2 = n - 2 * s1
-        print(s2)
         s2 = int(s2)
-        print(s2)
         for i in range(s1 + 1):
 
             va_x = va_x + ac_x * dt
@@ -571,11 +569,39 @@ class PlannerNode(Node):
         # "dt": [float](sept of time for angle a, is constant element)
         # Do not forget and respect the keys names
         # rectangular
-        vel_a = dst / time
+        # vel_a = dst / time
+        # dt = time / n
+        # ang = 0
+        # for i in range(int(n)):
+        #     ang = ang + vel_a * dt
+        #     turn_points.append({"idx": i, "a": ang, "t": time, "dt": dt})
+
+        ta = td = pt * time
+        tc = time * (1 - 2 * pt)
+
+        v_max = dst / 2 / (1 / 2 * ta + tc + 1 / 2 * tc)
+        ac = v_max / ta
+        de = -v_max / td
         dt = time / n
         ang = 0
-        for i in range(int(n)):
-            ang = ang + vel_a * dt
+        va = 0
+        s1 = s3 = int(n * pt)
+        s2 = n - 2 * s1
+
+        s2 = int(s2)
+        for i in range(s1):
+
+            va = va + ac * dt
+            ang = ang + va * dt
+            turn_points.append({"idx": i, "a": ang, "t": time, "dt": dt})
+
+        for i in range(s2):
+            ang = ang + va * dt
+            turn_points.append({"idx": i, "a": ang, "t": time, "dt": dt})
+
+        for i in range(s3):
+            va = va + de * dt
+            ang = ang + va * dt
             turn_points.append({"idx": i, "a": ang, "t": time, "dt": dt})
 
         # ---------------------------------------------------------------------
