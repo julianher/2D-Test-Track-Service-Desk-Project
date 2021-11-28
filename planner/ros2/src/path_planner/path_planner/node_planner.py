@@ -480,16 +480,58 @@ class PlannerNode(Node):
         # Do not forget and respect the keys names
 
         # rectangular
+        # dist_x = dst[0] - src[0]
+        # dist_y = dst[1] - src[1]
+        # vel_x = dist_x / time
+        # vel_y = dist_y / time
+        # dt = time / n
+        # pos_x = src[0]
+        # pos_y = src[1]
+        # for i in range(int(n)):
+        #     pos_x = pos_x + vel_x * dt
+        #     pos_y = pos_y + vel_y * dt
+        #     way_points.append({"idx": i, "pt": (pos_x, pos_y), "t": time, "dt": dt})
+
         dist_x = dst[0] - src[0]
+
         dist_y = dst[1] - src[1]
-        vel_x = dist_x / time
-        vel_y = dist_y / time
+        ta = td = pt * time
+        tc = time * (1 - 2 * pt)
+
+        v_max_x = dist_x / (1 / 2 * ta + tc + 1 / 2 * tc)
+        v_max_y = dist_y / (1 / 2 * ta + tc + 1 / 2 * tc)
+        ac_x = v_max_x / ta
+        ac_y = v_max_y / ta
+        de_x = -v_max_x / td
+        de_y = -v_max_y / td
         dt = time / n
         pos_x = src[0]
         pos_y = src[1]
-        for i in range(int(n)):
-            pos_x = pos_x + vel_x * dt
-            pos_y = pos_y + vel_y * dt
+        va_x = 0
+        va_y = 0
+        s1 = s3 = int(n * pt)
+        s2 = n - 2 * s1
+        print(s2)
+        s2 = int(s2)
+        print(s2)
+        for i in range(s1 + 1):
+
+            va_x = va_x + ac_x * dt
+            va_y = va_y + ac_y * dt
+            pos_x = pos_x + va_x * dt
+            pos_y = pos_y + va_y * dt
+            way_points.append({"idx": i, "pt": (pos_x, pos_y), "t": time, "dt": dt})
+
+        for i in range(s2 + 3):
+            pos_x = pos_x + v_max_x * dt
+            pos_y = pos_y + v_max_y * dt
+            way_points.append({"idx": i, "pt": (pos_x, pos_y), "t": time, "dt": dt})
+
+        for i in range(s3):
+            va_x = va_x + de_x * dt
+            va_y = va_y + de_y * dt
+            pos_x = pos_x + va_x * dt
+            pos_y = pos_y + va_y * dt
             way_points.append({"idx": i, "pt": (pos_x, pos_y), "t": time, "dt": dt})
 
         # ---------------------------------------------------------------------
@@ -530,12 +572,12 @@ class PlannerNode(Node):
         # Do not forget and respect the keys names
         # rectangular
         vel_a = dst / time
-
         dt = time / n
         ang = 0
         for i in range(int(n)):
             ang = ang + vel_a * dt
             turn_points.append({"idx": i, "a": ang, "t": time, "dt": dt})
+
         # ---------------------------------------------------------------------
 
         return turn_points
