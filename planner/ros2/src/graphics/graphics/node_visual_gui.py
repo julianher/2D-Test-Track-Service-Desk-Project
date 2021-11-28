@@ -326,7 +326,7 @@ class VisualsNode(Thread, Node):
 
     # TODO: Draw the robot
     def draw_robot(
-        self, l_img: np.ndarray, s_img: np.ndarray, pos: tuple, transparency=1.0
+        self, l_img: np.ndarray, s_img: np.ndarray, pos: tuple, transparency=1
     ) -> np.ndarray:
         """
             Draws robot in maps image
@@ -341,6 +341,7 @@ class VisualsNode(Thread, Node):
 
         # -----------------------------------------
         # Insert you solution here
+        l_img = utils.python_utils.overlay_image(l_img, s_img, pos, transparency, True)
 
         return l_img  # remove this line when implement your solution
 
@@ -361,10 +362,10 @@ class VisualsNode(Thread, Node):
         win_img, robot_coord = self.crop_map(coord=coord)
 
         # Draws robot in maps image
-        # if coord[0] and coord[1]:
-        #     win_img = self.draw_robot(
-        #         l_img=win_img, s_img=self._kiwibot_img, pos=robot_coord
-        #     )
+        if coord[0] and coord[1]:
+            win_img = self.draw_robot(
+                l_img=win_img, s_img=self._kiwibot_img, pos=robot_coord
+            )
 
         # Draw descriptions
         str_list = [
