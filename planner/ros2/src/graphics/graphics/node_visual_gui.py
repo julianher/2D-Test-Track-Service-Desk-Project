@@ -92,7 +92,7 @@ class VisualsNode(Thread, Node):
             planner_msg,
             "/path_planner/msg",
             self.cb_path_planner,
-            10,
+            qos_profile_sensor_data,
             callback_group=self.callback_group,
         )
 
@@ -107,7 +107,7 @@ class VisualsNode(Thread, Node):
             kiwibot_msg,
             "/kiwibot/status",
             self.cb_kiwibot_status,
-            10,
+            qos_profile_sensor_data,
             callback_group=self.callback_group,
         )
 
@@ -343,6 +343,7 @@ class VisualsNode(Thread, Node):
         # Insert you solution here
         l_img = utils.python_utils.overlay_image(l_img, s_img, pos, transparency, True)
 
+        print("funciona")
         return l_img  # remove this line when implement your solution
 
         # -----------------------------------------
