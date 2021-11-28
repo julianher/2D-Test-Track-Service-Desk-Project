@@ -475,9 +475,22 @@ class PlannerNode(Node):
         # where every element in has the next structure and data type:
         # "idx": [int](index of the waypoint),
         # "pt": [tuple][int](x and y axis positions in the image space),
-        # "t": [float](time for angle a),
-        # "dt": [float](sept of time for angle a, is constant element)
+        # "t": [float](time for distance),
+        # "dt": [float](sept of time for velocity, is constant element)
         # Do not forget and respect the keys names
+
+        # rectangular
+        dist_x = dst[0] - src[0]
+        dist_y = dst[1] - src[1]
+        vel_x = dist_x / time
+        vel_y = dist_y / time
+        dt = time / n
+        pos_x = src[0]
+        pos_y = src[1]
+        for i in range(int(n)):
+            pos_x = pos_x + vel_x * dt
+            pos_y = pos_y + vel_y * dt
+            way_points.append({"idx": i, "pt": (pos_x, pos_y), "t": time, "dt": dt})
 
         # ---------------------------------------------------------------------
 
@@ -487,7 +500,7 @@ class PlannerNode(Node):
         """
             Generates waypoints: coordinates and times with a trapezoidal turning profile
         Args:
-            dst: `tuple` target angle
+            dst: `float` target angle
             time: `float` time for turning angle
             pt: `float` deceleration/acceleration factor
             n: `int` control points to discrite the trajectory
@@ -515,7 +528,14 @@ class PlannerNode(Node):
         # "t": [float](time for angle a),
         # "dt": [float](sept of time for angle a, is constant element)
         # Do not forget and respect the keys names
+        # rectangular
+        vel_a = dst / time
 
+        dt = time / n
+        ang = 0
+        for i in range(int(n)):
+            ang = ang + vel_a * dt
+            turn_points.append({"idx": i, "a": ang, "t": time, "dt": dt})
         # ---------------------------------------------------------------------
 
         return turn_points
