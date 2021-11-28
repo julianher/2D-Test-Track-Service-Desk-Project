@@ -129,35 +129,45 @@ If you finish successfully all the points, you must have a window like this (wit
 
 ---
 <!-- ---------------------------------------------------------------------- -->
-## **QUESTIONARY**
+## **QUESTIONNARIE**
 
 Respond below every questions:
 
 1. [Python] Why the robot's image gets distorted when is turning?
+    We have to realize that the image is an HxWxC matrix. For the explanation we can ignore the channels by having a 1 channel image.
+    So we have an HxW matrix. Let's now imagine the matrix with a horizontal line in the center if we rotate that matrix 90 degrees we can represent that row of pixels as a column of pixels. But now think about a 15 degree rotation how can I represent that line now? I can't draw that line perfectly because the pixels are discrete and arranged in a matrix of perfectly spaced rows and columns. There is no pixel exactly 15 degrees above the previous one. So what we do is get an approximation of the new line and if we zoom in we will see that the line is not perfectly straight. Because we are rotating several times the same figure this approximation gets worse over time and we end up destroying the image. A possible solution is that instead of rotating over the same figure each time, we should rotate over the first main figure each time, so as not to have a cumulative error.
+
 
 2. [Python] are Python packages compiled as C++ packages?
+    No, they are compiled separately and communicate and work together through ROS.
 
 3. [Python] Why with some code errors in some nodes the logs are not printed?
 
 4. [Control] What other turn or speed profile would you implement, why, and what are the benefits?
+    I would use a s-line profile because it is smoother. In the trapezoidal profile the changes of acceleration occur instantly and that produces infinite jerk (in real life really high jerk values) that makes the robot to shake strongly during this acceleration and it could damage it. Same as when we solve the infinite acceleration problem for the trapezoidal profile, here we are solving the jerk problem.
 
 5. [C++] What is the mean of the number "15" used in the pthread_kill inside the destructor method?
+    When using 15 the signal sent is SIGTERM. It basically terminates a process in a gentle way. It is used correctly because it is one process killing another. For example SIGINT should be sent if the process is killed by the user pressing ctrl+ or SIGKILL to forcibly terminate a process.
 
 6. [C++] Why are we using UniquePointer instead of SharedPointers to publish a ROS2 message?
+    Because when you destroy a single pointer you destroy the object so it is a better way to manage resources. Otherwise, you have to destroy each pointer to destroy the object.
 
 7. [C++] Why are we using a m_multi_sound variable? Explain ...
 
 8. [C++] Why are we freeing the memory allocated by raw pointer "buff" variable and not freeing the memory allocated by the Shared and Unique Pointers? (HARD)
 
 10. [Docker] Explain with your own words what is the instructions `apt-get autoremove && apt-get clean -y for?`
+    Both helps us to eliminate information we do not longer need. sudo apt-get autoremove remove dependencies and apt-get clean removes packages from the local cache. They are useful because we want our docker image to be as light as possible.
 
 11. [Docker] If you modify a layer what happen with the previous and the next ones?
+    The previous ones stay the same and the next ones are build again. This is useful to not build the complete image again.
 
 12. [Docker] Can we change the basic image (`FROM ubuntu:20.04`) from the docker file to another?
+    I could fail. For example the ROS Foxy instalation would fail in other ubuntu's releases  because of the distro we are installing.
 
 Next questions is after you finish the project, it doesn't give points but we really appreciate you feedback:
-* What do you think about this project? is it hard or enough? is it to complicated, is it well structure, explanations and instructions are clear?
-
+I think it is difficult enough. The instructions are clear in most cases. The email said to start reading the running_dev_container file and it was written there that once the processes were done you would have the application running but it didn't (now I know why) but I thought it should. I thought maybe it was because I was using POP OS instead of ubunto (my computer runs better on POP OS) so I uninstalled POP OS and installed ubunto and everything again and that took a long time. Once in Ubuntu I also spent a lot of time trying to fix this issue by following the steps many times. Then I read the following pages and realized that was the task. After that everything was pretty clear.
+I also want to thank you for letting me participate in this project because it made me realize that I really like doing this. It didn't feel like homework because I had a lot of fun and learned a lot.
 ---
 <!-- ---------------------------------------------------------------------- -->
 ## **EXTRA-HOMEWORK**
