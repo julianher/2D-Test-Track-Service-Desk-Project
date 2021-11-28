@@ -13,6 +13,7 @@ import cv2
 import copy
 import sys
 import os
+import utils
 
 from threading import Thread, Event
 
@@ -87,7 +88,13 @@ class VisualsNode(Thread, Node):
         # callback:cb_path_planner
         # add here your solution
 
-        rospy.Subscriber("/path_planner/msg", planner_msg, cb_path_planner)
+        self.subscription = self.create_subscription(
+            planner_msg,
+            "/path_planner/msg",
+            self.cb_path_planner,
+            10,
+            callback_group=self.callback_group,
+        )
 
         # ------------------------------------------
         # TODO: Implement the Kiwibot status subscriber,
@@ -96,7 +103,13 @@ class VisualsNode(Thread, Node):
         # callback:cb_kiwibot_status
         # add here your solution
 
-        rospy.Subscriber("/kiwibot/status", kiwibot_msg, cb_kiwibot_status)
+        self.subscription = self.create_subscription(
+            kiwibot_msg,
+            "/kiwibot/status",
+            self.cb_kiwibot_status,
+            10,
+            callback_group=self.callback_group,
+        )
 
         self.msg_kiwibot = kiwibot_msg()
         self.turn_robot(heading_angle=float(os.getenv("BOT_INITIAL_YAW", default=0.0)))
