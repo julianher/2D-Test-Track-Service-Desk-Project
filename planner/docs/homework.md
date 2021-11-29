@@ -163,7 +163,7 @@ Respond below every questions:
     The previous ones stay the same and the next ones are build again. This is useful to not build the complete image again.
 
 12. [Docker] Can we change the basic image (`FROM ubuntu:20.04`) from the docker file to another?
-    I could fail. For example the ROS Foxy instalation would fail in other ubuntu's releases  because of the distro we are installing.
+    I could fail. For example the ROS galactic instalation would fail in other ubuntu's releases  because of the distro we are installing.
 
 Next questions is after you finish the project, it doesn't give points but we really appreciate you feedback:
 I think it is difficult enough. The instructions are clear in most cases. The email said to start reading the running_dev_container file and it was written there that once the processes were done you would have the application running but it didn't (now I know why) but I thought it should. I thought maybe it was because I was using POP OS instead of ubunto (my computer runs better on POP OS) so I uninstalled POP OS and installed ubunto and everything again and that took a long time. Once in Ubuntu I also spent a lot of time trying to fix this issue by following the steps many times. Then I read the following pages and realized that was the task. After that everything was pretty clear.
