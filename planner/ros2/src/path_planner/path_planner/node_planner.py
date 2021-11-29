@@ -512,25 +512,28 @@ class PlannerNode(Node):
         s1 = s3 = int(n * pt)
         s2 = n - 2 * s1
         s2 = int(s2)
+        t = 0
         for i in range(s1 + 1):
-
+            t += dt
             va_x = va_x + ac_x * dt
             va_y = va_y + ac_y * dt
             pos_x = pos_x + va_x * dt
             pos_y = pos_y + va_y * dt
-            way_points.append({"idx": i, "pt": (pos_x, pos_y), "t": time, "dt": dt})
+            way_points.append({"idx": i, "pt": (pos_x, pos_y), "t": t, "dt": dt})
 
         for i in range(s2 + 3):
+            t += dt
             pos_x = pos_x + v_max_x * dt
             pos_y = pos_y + v_max_y * dt
-            way_points.append({"idx": i, "pt": (pos_x, pos_y), "t": time, "dt": dt})
+            way_points.append({"idx": i, "pt": (pos_x, pos_y), "t": t, "dt": dt})
 
         for i in range(s3):
+            t += dt
             va_x = va_x + de_x * dt
             va_y = va_y + de_y * dt
             pos_x = pos_x + va_x * dt
             pos_y = pos_y + va_y * dt
-            way_points.append({"idx": i, "pt": (pos_x, pos_y), "t": time, "dt": dt})
+            way_points.append({"idx": i, "pt": (pos_x, pos_y), "t": t, "dt": dt})
 
         # ---------------------------------------------------------------------
 
@@ -589,20 +592,23 @@ class PlannerNode(Node):
         s2 = n - 2 * s1
 
         s2 = int(s2)
+        t = 0
         for i in range(s1):
-
+            t += dt
             va = va + ac * dt
             ang = ang + va * dt
-            turn_points.append({"idx": i, "a": ang, "t": time, "dt": dt})
+            turn_points.append({"idx": i, "a": ang, "t": t, "dt": dt})
 
         for i in range(s2):
+            t += dt
             ang = ang + va * dt
-            turn_points.append({"idx": i, "a": ang, "t": time, "dt": dt})
+            turn_points.append({"idx": i, "a": ang, "t": t, "dt": dt})
 
         for i in range(s3):
+            t += dt
             va = va + de * dt
             ang = ang + va * dt
-            turn_points.append({"idx": i, "a": ang, "t": time, "dt": dt})
+            turn_points.append({"idx": i, "a": ang, "t": t, "dt": dt})
 
         # ---------------------------------------------------------------------
 
