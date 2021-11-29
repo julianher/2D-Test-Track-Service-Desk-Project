@@ -135,6 +135,8 @@ class VisualsNode(Thread, Node):
         self.run_event.set()
         self.start()
 
+        self.key = 0
+
     def cb_path_planner(self, msg: planner_msg) -> None:
         """
         Callback to update path planner state information in visuals
@@ -401,7 +403,17 @@ class VisualsNode(Thread, Node):
             fontScale=0.4,
         )
 
-        porc = "???"
+        distances = [62.71, 57.27, 71.53, 64.67, 94.13, 101.28, 93.75, 92.83, 80.92]
+
+        if self.key - 49 > 0:
+            k = self.key - 49
+
+        try:
+            porc = 100 * self.msg_kiwibot.dist / distances[k]
+        except:
+            porc = 0
+
+        porc = round(porc)
         win_img = print_list_text(
             win_img,
             [f"Porc: {porc}%"],
@@ -479,7 +491,8 @@ class VisualsNode(Thread, Node):
                         msg_type="INFO",
                     )
                     self.pub_start_routine.publish(Int32(data=int(chr(key))))
-
+                    self.key = key
+                    print("self", key)
                 else:
                     printlog(
                         msg=f"No action for key {chr(key)} -> {key}",
